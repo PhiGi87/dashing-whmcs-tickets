@@ -2,16 +2,20 @@
 require 'net/http'
 require 'json'
 
+# your whmcs url
+whmcsurl = 'https://yourdomain.com/whmcs'
 #configuration
 username = 'dashboard'
-
 #this is the password hashed with md5
 password = 'verystrangepassword'
+#this is the accesskey from your whmcs
+accesskey = '123456'
 
+## Here, no Changes Please!
 SCHEDULER.every '1m', :first_in => 0 do |job|
   #whmcs
-  uri = URI('https://kas.host-on.de/includes/api.php?accesskey=123456')
-  params = {accesskey: '123456', username: username, password: password, action: 'gettickets', responsetype: 'json', status: "Open"}
+  uri = URI("{whmcsurl}/includes/api.php")
+  params = {accesskey: accesskey, username: username, password: password, action: 'gettickets', responsetype: 'json', status: "Open"}
   uri.query = URI.encode_www_form(params)
 
   Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
